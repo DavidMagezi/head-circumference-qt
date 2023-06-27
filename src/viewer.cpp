@@ -1,13 +1,16 @@
 #include <QApplication>
+#include <QFileDialog>
+#include <QString>
 
 #include "gui/image.h"
-#include "gui/select.h"
 
 int main(int argc, char **argv){
     QApplication app(argc,argv);
-    //GUI::Select select;
-    //select.setFileMode(QFileDialog::AnyFile);
-    GUI::Image image;
+    QString folder; 
+    folder = QFileDialog::getOpenFileName();
+
+    GUI::Image image(folder);
     image.show();
+    
     return app.exec();
 }
