@@ -1,9 +1,10 @@
 #include <QApplication>
-#include <QLabel>
+
+#include "gui/image.h"
 
 int main(int argc, char **argv){
     QApplication app(argc,argv);
-    QLabel viewer("Ultrasound viewer");
-    viewer.show();
+    GUI::Image image;
+    image.show();
     return app.exec();
 }
