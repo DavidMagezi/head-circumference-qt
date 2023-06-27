@@ -1,1 +1,1 @@
-# head-circumference-viewer-qt
+# head-circumference-qt
