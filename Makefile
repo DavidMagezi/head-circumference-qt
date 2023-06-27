@@ -14,7 +14,7 @@ TARGET_STEM = viewer
 TARGET = $(EXEC_DIR)/$(TARGET_STEM)
 
 _GUI = gui
-_GUI_DEPS = image.h
+_GUI_DEPS = image.h select.h
 
 GUI_OBJ_DIR = $(OBJ_DIR)/$(_GUI)
 GUI_SRC_DIR = $(SRC_DIR)/$(_GUI)
