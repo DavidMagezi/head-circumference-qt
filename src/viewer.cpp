@@ -9,11 +9,13 @@ int main(int argc, char **argv){
     QString folder; 
     folder = QFileDialog::getExistingDirectory(nullptr,
             QFileDialog::tr("Select directory"),
-            "/home",
+            QDir(QDir::homePath()).filePath("local/ultrasound/"),
             QFileDialog::ShowDirsOnly 
             | QFileDialog::DontResolveSymlinks);
     GUI::Image image(folder);
-    image.show();
+    if (image.load()){
+        image.show();
+    }
     
     return app.exec();
 }
