@@ -13,7 +13,7 @@ int main(int argc, char **argv){
             QFileDialog::ShowDirsOnly 
             | QFileDialog::DontResolveSymlinks);
     GUI::Image image(folder);
-    if (image.load()){
+    if (image.load_file()){
         image.show();
     }
     
