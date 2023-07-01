@@ -1,5 +1,7 @@
 #include "gui/image.h"
 
+#include <iostream>
+#include <filesystem>
 #include <string>
 
 #include <QDir>
@@ -11,10 +13,13 @@
 #include <QPushButton>
 
 namespace GUI{
-    Image::Image(QString folder, QWidget *parent):
+    Image::Image(std::string folder, QWidget *parent):
         folder_(folder),
+        image_files_(0),
+        mask_files_(0),
         QWidget(parent){
-            setWindowTitle(folder_);
+            scan_directory();
+            setWindowTitle(folder_.c_str());
             setFixedSize(500,250);
             button_next_ = new QPushButton("Next", this);
             button_previous_ = new QPushButton("Previous", this);
@@ -36,24 +41,38 @@ namespace GUI{
     }
 
     bool Image::load_file(){
-        QString file_name = folder_ + "/805_HC.png";
-        QImageReader reader(file_name);
+        std::string file_name = folder_ + "/805_HC.png";
+        QImageReader reader(file_name.c_str());
         reader.setAutoTransform(true);
         const QImage current_image = reader.read();
         if (current_image.isNull()) {
             QMessageBox::information(this,QGuiApplication::applicationDisplayName(),
                     QFileDialog::tr("Cannot load %1: %2")
-                    .arg(QDir::toNativeSeparators(file_name),reader.errorString()));
+                    .arg(QDir::toNativeSeparators(file_name.c_str()),reader.errorString()));
             return false;
         }
-
-        //image_label_->adjustSize();
-
 
         image_label_->setPixmap(QPixmap::fromImage(current_image));
         image_label_->show();
 
         return true;
+    }
+
+    void Image::scan_directory(){
+        const std::filesystem::path folder(folder_);
+        std::regex image_pattern("(.*)(_HC.png)");
+        std::regex mask_pattern("(.*)(_HC_Annotation.png)");
+        std::string next_file;
+        for (auto& file: std::filesystem::directory_iterator(folder)){
+            next_file = file.path().filename().string();
+            if (std::regex_match(next_file,image_pattern)){
+                image_files_.push_back(next_file);
+            } else if (std::regex_match(next_file,mask_pattern)){
+                mask_files_.push_back(next_file);
+            }
+        }
+        std::cout << "Number of images: " << image_files_.size() << "\n";
+        std::cout << "Number of masks: " << mask_files_.size() << "\n";
     }
 
     //private slot

@@ -1,3 +1,5 @@
+#include <string>
+
 #include <QApplication>
 #include <QFileDialog>
 #include <QString>
@@ -12,7 +14,7 @@ int main(int argc, char **argv){
             QDir(QDir::homePath()).filePath("local/ultrasound/"),
             QFileDialog::ShowDirsOnly 
             | QFileDialog::DontResolveSymlinks);
-    GUI::Image image(folder);
+    GUI::Image image(folder.toStdString());
     if (image.load_file()){
         image.show();
     }

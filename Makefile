@@ -1,5 +1,5 @@
 CXX = g++
-CFLAGS = $$(pkg-config --cflags --libs Qt5Widgets) -fPIC
+CFLAGS = $$(pkg-config --cflags --libs Qt5Widgets) -fPIC -std=c++17
 OBJ_EXT = .o
 CPP_EXT =.cpp
 
@@ -38,8 +38,8 @@ $(TARGET): $(SRC_DIR)/$(TARGET_STEM)$(CPP_EXT) $(GUI_OBJS) | $(EXEC_DIR)
 	$(CXX) $< -o $@ $(CFLAGS) $(GUI_OBJS)
 
 clean:
-	rm $(TARGET) 
-	rmdir $(EXEC_DIR) 
+	rm $(TARGET) $(GUI_OBJ_DIR)/* 
+	rmdir $(EXEC_DIR) $(GUI_OBJ_DIR) $(OBJ_DIR) 
 
 run:
 	$(TARGET)
