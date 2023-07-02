@@ -1,6 +1,7 @@
 #ifndef DEF_GUI_IMAGE
 #define DEF_GUI_IMAGE
 
+#include <filesystem>
 #include <regex>
 #include <string>
 #include <string_view>
@@ -17,7 +18,7 @@ public:
     explicit Image(std::string folder, QWidget *parent = 0);
     ~Image();
     bool load_file();
-    enum class Load{Previous,Next};
+    enum class Load{First,Last,Previous,Next};
     void scan_directory();
 
 private slots:
@@ -25,12 +26,14 @@ private slots:
     void handle_checkbox(bool checked);
 
 private:
-
     QCheckBox *check_box_ellipse_;
-    QPushButton *button_previous_, *button_next_;
-    std::string folder_;
+    QPushButton *button_first_, *button_last_, *button_previous_, *button_next_;
+    std::string displayed_image_; 
+    std::filesystem::path folder_, mask_path_;
     std::vector<std::string> image_files_, mask_files_;
-    QLabel *image_label_;
+    QLabel *image_label_, *mask_label_,*text_label_;
+    int image_index_, number_of_images_, number_of_masks_;
+    bool mask_available_;
 
     static constexpr int BUTTON_HEIGHT_ = 30;
     static constexpr int BUTTON_WIDTH_ = 80;
@@ -40,8 +43,6 @@ private:
     static constexpr int LEFT_MARGIN_ = 5;
 
     //static constexpr std::string_view IMAGE_PATTERN = '.jpg';
-
-
 };
 }//namespace GUI
 #endif //DEF_GUI_IMAGE
